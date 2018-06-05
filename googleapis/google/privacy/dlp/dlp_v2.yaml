@@ -1,0 +1,126 @@
+type: google.api.Service
+config_version: 3
+name: dlp.googleapis.com
+title: Cloud Data Loss Prevention (DLP) API
+
+apis:
+- name: google.privacy.dlp.v2.DlpService
+
+documentation:
+  summary: |-
+    Provides methods for detection, risk analysis, and de-identification of
+    privacy-sensitive fragments in text, images, and Google Cloud Platform
+    storage repositories.
+  rules:
+  - selector: google.longrunning.Operations.CancelOperation
+    description: |-
+      Cancels an operation. Use the
+      [`inspect.operations.get`][/dlp/docs/reference/rest/v2beta1/inspect.operations/get]
+      to check whether the cancellation succeeded or the operation completed
+      despite cancellation.
+  - selector: google.longrunning.Operations.DeleteOperation
+    description: This method is not supported and the server returns `UNIMPLEMENTED`.
+  - selector: google.longrunning.Operations.ListOperations
+    description: Fetches the list of long running operations.
+
+backend:
+  rules:
+  - selector: google.longrunning.Operations.ListOperations
+    deadline: 300.0
+  - selector: google.longrunning.Operations.GetOperation
+    deadline: 300.0
+  - selector: google.longrunning.Operations.DeleteOperation
+    deadline: 300.0
+  - selector: google.longrunning.Operations.CancelOperation
+    deadline: 300.0
+  - selector: google.privacy.dlp.v2.DlpService.InspectContent
+    deadline: 300.0
+  - selector: google.privacy.dlp.v2.DlpService.RedactImage
+    deadline: 300.0
+  - selector: google.privacy.dlp.v2.DlpService.DeidentifyContent
+    deadline: 300.0
+  - selector: google.privacy.dlp.v2.DlpService.ReidentifyContent
+    deadline: 300.0
+  - selector: google.privacy.dlp.v2.DlpService.ListInfoTypes
+    deadline: 300.0
+  - selector: google.privacy.dlp.v2.DlpService.CreateInspectTemplate
+    deadline: 300.0
+  - selector: google.privacy.dlp.v2.DlpService.UpdateInspectTemplate
+    deadline: 300.0
+  - selector: google.privacy.dlp.v2.DlpService.GetInspectTemplate
+    deadline: 300.0
+  - selector: google.privacy.dlp.v2.DlpService.ListInspectTemplates
+    deadline: 300.0
+  - selector: google.privacy.dlp.v2.DlpService.DeleteInspectTemplate
+    deadline: 300.0
+  - selector: google.privacy.dlp.v2.DlpService.CreateDeidentifyTemplate
+    deadline: 300.0
+  - selector: google.privacy.dlp.v2.DlpService.UpdateDeidentifyTemplate
+    deadline: 300.0
+  - selector: google.privacy.dlp.v2.DlpService.GetDeidentifyTemplate
+    deadline: 300.0
+  - selector: google.privacy.dlp.v2.DlpService.ListDeidentifyTemplates
+    deadline: 300.0
+  - selector: google.privacy.dlp.v2.DlpService.DeleteDeidentifyTemplate
+    deadline: 300.0
+  - selector: google.privacy.dlp.v2.DlpService.CreateJobTrigger
+    deadline: 300.0
+  - selector: google.privacy.dlp.v2.DlpService.UpdateJobTrigger
+    deadline: 300.0
+  - selector: google.privacy.dlp.v2.DlpService.GetJobTrigger
+    deadline: 300.0
+  - selector: google.privacy.dlp.v2.DlpService.ListJobTriggers
+    deadline: 300.0
+  - selector: google.privacy.dlp.v2.DlpService.DeleteJobTrigger
+    deadline: 300.0
+  - selector: google.privacy.dlp.v2.DlpService.CreateDlpJob
+    deadline: 300.0
+  - selector: google.privacy.dlp.v2.DlpService.ListDlpJobs
+    deadline: 300.0
+  - selector: google.privacy.dlp.v2.DlpService.GetDlpJob
+    deadline: 300.0
+  - selector: google.privacy.dlp.v2.DlpService.DeleteDlpJob
+    deadline: 300.0
+  - selector: google.privacy.dlp.v2.DlpService.CancelDlpJob
+    deadline: 300.0
+
+http:
+  rules:
+  - selector: google.longrunning.Operations.ListOperations
+    get: '/v1/{name=inspect/operations}'
+    additional_bindings:
+    - get: '/v2beta1/{name=inspect/operations}'
+
+    - get: '/v2beta1/{name=riskAnalysis/operations}'
+
+  - selector: google.longrunning.Operations.GetOperation
+    get: '/v1/{name=inspect/operations/*}'
+    additional_bindings:
+    - get: '/v2beta1/{name=inspect/operations/*}'
+
+    - get: '/v2beta1/{name=riskAnalysis/operations/*}'
+
+  - selector: google.longrunning.Operations.DeleteOperation
+    delete: '/v1/{name=inspect/operations/*}'
+    additional_bindings:
+    - delete: '/v2beta1/{name=inspect/operations/*}'
+
+    - delete: '/v2beta1/{name=riskAnalysis/operations/*}'
+
+  - selector: google.longrunning.Operations.CancelOperation
+    post: '/v1/{name=inspect/operations/*}:cancel'
+    body: '*'
+    additional_bindings:
+    - post: '/v2beta1/{name=inspect/operations/*}:cancel'
+      body: '*'
+
+    - post: '/v2beta1/{name=riskAnalysis/operations/*}:cancel'
+      body: '*'
+
+
+authentication:
+  rules:
+  - selector: '*'
+    oauth:
+      canonical_scopes: |-
+        https://www.googleapis.com/auth/cloud-platform

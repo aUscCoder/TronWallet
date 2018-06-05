@@ -1,0 +1,16 @@
+
+package sogou_conf;
+
+
+struct conf_data
+{
+	int version;
+	int original_data_size;
+	bool compressed;
+	binary data;
+};
+
+struct conf_pack
+{
+	map<string, conf_data> conf;
+};
